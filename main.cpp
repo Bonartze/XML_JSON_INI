@@ -4,7 +4,7 @@
 #include <numeric>
 #include <vector>
 
-// не меняйте файлы xml.h и xml.cpp
+
 #include "xml.h"
 
 using namespace std;
