@@ -67,6 +67,12 @@ build CMakeFiles/names.dir/json.cpp.o: CXX_COMPILER__names_unscanned_Debug /home
   OBJECT_DIR = CMakeFiles/names.dir
   OBJECT_FILE_DIR = CMakeFiles/names.dir
 
+build CMakeFiles/names.dir/ini.cpp.o: CXX_COMPILER__names_unscanned_Debug /home/ivan/CLionProjects/names/ini.cpp || cmake_object_order_depends_target_names
+  DEP_FILE = CMakeFiles/names.dir/ini.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/names.dir
+  OBJECT_FILE_DIR = CMakeFiles/names.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target names
@@ -75,7 +81,7 @@ build CMakeFiles/names.dir/json.cpp.o: CXX_COMPILER__names_unscanned_Debug /home
 #############################################
 # Link the executable names
 
-build names: CXX_EXECUTABLE_LINKER__names_Debug CMakeFiles/names.dir/main.cpp.o CMakeFiles/names.dir/xml.cpp.o CMakeFiles/names.dir/json.cpp.o
+build names: CXX_EXECUTABLE_LINKER__names_Debug CMakeFiles/names.dir/main.cpp.o CMakeFiles/names.dir/xml.cpp.o CMakeFiles/names.dir/json.cpp.o CMakeFiles/names.dir/ini.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/names.dir
   POST_BUILD = :

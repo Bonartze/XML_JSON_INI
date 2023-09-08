@@ -1,44 +1,36 @@
-#include <algorithm>
 #include <cassert>
-#include <iostream>
-#include <numeric>
-#include <vector>
-
-
-#include "xml.h"
+#include <sstream>
+#include "ini.h"
 
 using namespace std;
 
-struct Spending {
-    string category;
-    int amount;
-};
-
-int CalculateTotalSpendings(const vector<Spending> &spendings) {
-    return accumulate(spendings.begin(), spendings.end(), 0,
-                      [](int current, const Spending &spending) {
-                          return current + spending.amount;
-                      });
-}
-
-string FindMostExpensiveCategory(const vector<Spending> &spendings) {
-    assert(!spendings.empty());
-    auto compare_by_amount = [](const Spending &lhs, const Spending &rhs) {
-        return lhs.amount < rhs.amount;
-    };
-    return max_element(begin(spendings), end(spendings), compare_by_amount)->category;
-}
-
-vector<Spending> LoadFromXml(istream &input) {
-    vector<Spending> spending;
-    auto r = XML::Load(input);
-    for (auto &t: r.GetRoot().Children())
-        spending.push_back({t.AttributeValue<string>("category"), t.AttributeValue<int>("amount")});
-    return spending;
-}
-
 int main() {
-    const vector<Spending> spendings = LoadFromXml(cin);
-    cout << "Total "sv << CalculateTotalSpendings(spendings) << '\n';
-    cout << "Most expensive is "sv << FindMostExpensiveCategory(spendings) << '\n';
+    std::istringstream input{
+            "[vegetables]\n"
+            "potatoes=10\n"
+            "onions=1 \n"
+            "\n"
+            "cucumbers=12\n"
+            "\n"
+            "[guests] \n"
+            "guest1_name = Ivan Durak\n"
+            "guest2_name =  Vasilisa Premudraya\n"
+            "[guest black list]"};
+    ini::Document doc = ini::Load(input);
+
+    assert(doc.GetSectionCount() == 3);
+    assert((doc.GetSection("vegetables"s)
+            == ini::Section{
+            {"potatoes"s,  "10"s},
+            {"onions"s,    "1"s},
+            {"cucumbers"s, "12"s},
+    }));
+    assert((doc.GetSection("guests"s)
+            == ini::Section{{"guest1_name"s, "Ivan Durak"s},
+                            {"guest2_name"s, "Vasilisa Premudraya"s}}));
+    assert((doc.GetSection("dragons"s) == ini::Section{}));
+    assert((doc.GetSection("guest black list"s) == ini::Section{}));
+
+    doc.AddSection("pets"s) = ini::Section{{"nasty"s, "rat"s}};
+    assert(doc.GetSectionCount() == 4);
 }
